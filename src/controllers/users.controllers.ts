@@ -15,7 +15,7 @@ export const createUser = async (
         res.json({
             status: 'success',
             data: { ...user },
-            message: 'User created successfully!',
+            message: 'User has been created successfully!',
         });
     } catch (error) {
         next(error);
@@ -32,7 +32,7 @@ export const getUsers = async (
         res.json({
             status: 'success',
             data: users,
-            message: 'Users have been retrieved successfully',
+            message: 'Users have been retrieved successfully!',
         });
     } catch (err) {
         next(err);
@@ -51,7 +51,7 @@ export const getUser = async (
         res.json({
             status: 'success',
             data: user,
-            message: 'User has been retrieved successfully',
+            message: 'User has been retrieved successfully!',
         });
     } catch (err) {
         next(err);
@@ -68,7 +68,7 @@ export const updateUser = async (
         res.json({
             status: 'success',
             data: user,
-            message: 'User has been updated successfully',
+            message: 'User has been updated successfully!',
         });
     } catch (err) {
         next(err);
@@ -87,7 +87,7 @@ export const deleteUser = async (
         res.json({
             status: 'success',
             data: user,
-            message: 'User has been deleted successfully',
+            message: 'User has been deleted successfully!',
         });
     } catch (err) {
         next(err);
@@ -109,13 +109,13 @@ export const authenticate = async (
         if (!user) {
             res.status(401).json({
                 status: 'error',
-                message: 'Username and password do not match',
+                message: 'Username and password do not match!',
             });
         }
         return res.json({
             status: 'success',
             data: { ...user, token },
-            message: 'User authentication was successful',
+            message: 'User has been authenticated successfully!',
         });
     } catch (err) {
         return next(err);

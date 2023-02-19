@@ -9,30 +9,31 @@ const handleUnauthorizedError = (next: NextFunction) => {
     next(error);
 };
 
+const validateToken = (req: Request, _res: Response, next: NextFunction) => {
+    const authHeader = req.headers['Authorization'] as string;
+    if (typeof authHeader === 'undefined') {
+        handleUnauthorizedError(next);
+    } else {
+        const bearer = authHeader.split(' ')[1];
+        const decode = jwt.verify(
+            bearer,
+            config.tokenSecret as unknown as string
+        );
+        if (!decode) {
+            handleUnauthorizedError(next);
+        } else {
+            next();
+        }
+    }
+};
+
 const validateTokenMiddleware = (
     req: Request,
     _res: Response,
     next: NextFunction
 ) => {
     try {
-        const authHeader = req.get('Authorization');
-        if (authHeader) {
-            const bearer = authHeader.split(' ')[0].toLocaleLowerCase();
-            const token = authHeader.split(' ')[1];
-            if (token && bearer === 'bearer') {
-                const decode = jwt.verify(
-                    token,
-                    config.tokenSecret as unknown as string
-                );
-                if (decode) {
-                    next();
-                } else {
-                    handleUnauthorizedError(next);
-                }
-            }
-        } else {
-            handleUnauthorizedError(next);
-        }
+        validateToken(req, _res, next);
     } catch (error) {
         handleUnauthorizedError(next);
     }
