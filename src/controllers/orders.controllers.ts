@@ -3,23 +3,6 @@ import OrderModel from '../models/order.model';
 
 const orderModel = new OrderModel();
 
-// export const createOrder = async (
-//     req: Request,
-//     res: Response,
-//     next: NextFunction
-// ) => {
-//     try {
-//         const order = await orderModel.create(req.params.user_id);
-//         res.json({
-//             status: 'success',
-//             data: { ...order },
-//             message: 'Order created successfully!',
-//         });
-//     } catch (error) {
-//         next(error);
-//     }
-// };
-
 export const createOrder = async (
     req: Request,
     res: Response,
@@ -31,6 +14,23 @@ export const createOrder = async (
             status: 'success',
             data: { ...order },
             message: 'Order created successfully!',
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const createOrderDetails = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const orderDetails = await orderModel.addToOrder(req.body);
+        res.json({
+            status: 'success',
+            data: { ...orderDetails },
+            message: 'Order details created successfully!',
         });
     } catch (error) {
         next(error);
@@ -76,22 +76,24 @@ export const getOrder = async (
     }
 };
 
-// export const updateOrder = async (
-//     req: Request,
-//     res: Response,
-//     next: NextFunction
-// ) => {
-//     try {
-//         const order = await orderModel.updateOrder(req.body);
-//         res.json({
-//             status: 'success',
-//             data: order,
-//             message: 'Order has been updated successfully',
-//         });
-//     } catch (err) {
-//         next(err);
-//     }
-// };
+export const getOrderDetails = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const order = await orderModel.getOrderDetails(
+            req.params.id as unknown as string
+        );
+        res.json({
+            status: 'success',
+            data: order,
+            message: 'Order has been retrieved successfully',
+        });
+    } catch (err) {
+        next(err);
+    }
+};
 
 export const deleteOrder = async (
     req: Request,

@@ -5,6 +5,9 @@ import validateTokenMiddleware from '../../middleware/authMiddleware';
 const routes = Router();
 
 routes.route('/').post(controllers.createOrder);
+routes.route('/details').post(controllers.createOrderDetails);
+routes.route('/details/:id').get(controllers.getOrderDetails);
+
 routes
     .route('/:id')
     .get(validateTokenMiddleware, controllers.getOrders)

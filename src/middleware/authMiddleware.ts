@@ -10,7 +10,8 @@ const handleUnauthorizedError = (next: NextFunction) => {
 };
 
 const validateToken = (req: Request, _res: Response, next: NextFunction) => {
-    const authHeader = req.headers['Authorization'] as string;
+    const authHeader = req.headers['authorization'] as string;
+
     if (typeof authHeader === 'undefined') {
         handleUnauthorizedError(next);
     } else {
