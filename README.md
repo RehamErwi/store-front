@@ -211,6 +211,22 @@ Example:
 }
 ```
 
+#### Create order details
+
+```http
+  POST /api/orders/details
+```
+
+Example:
+
+```JSON
+{
+    "product_id": "f9199f5c-c38a-472e-b490-509c9f186a93",
+    "order_id": "2ede063a-f9e9-422f-9c63-3768b419a357",
+    "quantity": "5"
+}
+```
+
 #### Get all orders by user id
 
 ```http
@@ -221,6 +237,12 @@ Example:
 
 ```http
   GET /api/orders/single/:id
+```
+
+#### Get order details by id
+
+```http
+  GET /api/orders/details/:id
 ```
 
 #### Delete order
