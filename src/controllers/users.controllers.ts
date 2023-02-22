@@ -2,41 +2,60 @@ import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import config from '../config';
 import UserModel from '../models/user.model';
+import User from '../types/user.type';
+
+type usersControllerTypes = {
+    data: User | User[];
+    message: string;
+    res: Response;
+    next: NextFunction;
+};
 
 const userModel = new UserModel();
 
-export const createUser = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+const usersController = async ({
+    data,
+    message,
+    res,
+    next,
+}: usersControllerTypes) => {
     try {
-        const user = await userModel.create(req.body);
         res.json({
             status: 'success',
-            data: { ...user },
-            message: 'User has been created successfully!',
+            data: data,
+            message: message,
         });
     } catch (error) {
         next(error);
     }
 };
 
-export const getUsers = async (
-    _: Request,
+export const createUser = async (
+    req: Request,
     res: Response,
     next: NextFunction
 ) => {
-    try {
-        const users = await userModel.getUsers();
-        res.json({
-            status: 'success',
-            data: users,
-            message: 'Users have been retrieved successfully!',
-        });
-    } catch (err) {
-        next(err);
-    }
+    const data = await userModel.create(req.body);
+    usersController({
+        data: { ...data },
+        message: 'Success! User has been created.',
+        res: res,
+        next: next,
+    });
+};
+
+export const getUsers = async (
+    _req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const data = await userModel.getUsers();
+    usersController({
+        data: data,
+        message: 'Success! Users have been fetched.',
+        res: res,
+        next: next,
+    });
 };
 
 export const getUser = async (
@@ -44,18 +63,13 @@ export const getUser = async (
     res: Response,
     next: NextFunction
 ) => {
-    try {
-        const user = await userModel.getUser(
-            req.params.id as unknown as string
-        );
-        res.json({
-            status: 'success',
-            data: user,
-            message: 'User has been retrieved successfully!',
-        });
-    } catch (err) {
-        next(err);
-    }
+    const data = await userModel.getUser(req.params.id as unknown as string);
+    usersController({
+        data: data,
+        message: 'Success! User has been fetched.',
+        res: res,
+        next: next,
+    });
 };
 
 export const updateUser = async (
@@ -63,16 +77,13 @@ export const updateUser = async (
     res: Response,
     next: NextFunction
 ) => {
-    try {
-        const user = await userModel.updateUser(req.body);
-        res.json({
-            status: 'success',
-            data: user,
-            message: 'User has been updated successfully!',
-        });
-    } catch (err) {
-        next(err);
-    }
+    const data = await userModel.updateUser(req.body);
+    usersController({
+        data: data,
+        message: 'Success! User has been updated.',
+        res: res,
+        next: next,
+    });
 };
 
 export const deleteUser = async (
@@ -80,18 +91,13 @@ export const deleteUser = async (
     res: Response,
     next: NextFunction
 ) => {
-    try {
-        const user = await userModel.deleteUser(
-            req.params.id as unknown as string
-        );
-        res.json({
-            status: 'success',
-            data: user,
-            message: 'User has been deleted successfully!',
-        });
-    } catch (err) {
-        next(err);
-    }
+    const data = await userModel.deleteUser(req.params.id as unknown as string);
+    usersController({
+        data: data,
+        message: 'Success! User has been deleted.',
+        res: res,
+        next: next,
+    });
 };
 
 export const authenticate = async (
