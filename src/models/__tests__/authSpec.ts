@@ -1,6 +1,5 @@
 import db from '../../database';
-import User from '../../types/user.type';
-import UserModel from '../user.model';
+import UserModel, { User } from '../user';
 
 const userModel = new UserModel();
 
@@ -13,21 +12,21 @@ describe('Test user authentication', () => {
 
     describe('Auth logic', () => {
         const user = {
-            email: 'test@example.com',
-            user_name: 'testUser',
-            first_name: 'Test',
+            email: 'authUser@test.com',
+            user_name: 'authUser',
+            first_name: 'Auth',
             last_name: 'User',
             password: 'test123',
         } as User;
 
         beforeAll(async () => {
-            const createUser = await userModel.create(user);
-            user.id = createUser.id;
+            const testUser = await userModel.create(user);
+            user.id = testUser.id;
         });
 
         afterAll(async () => {
             const connection = await db.connect();
-            const sql = 'DELETE FROM users';
+            const sql = 'DELETE FROM users;';
             await connection.query(sql);
             connection.release();
         });
